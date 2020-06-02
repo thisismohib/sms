@@ -8,5 +8,4 @@ import com.nafys.sms.domain.Student;
 @RepositoryRestResource(collectionResourceRel = "students", path = "students")*/
 public interface StudentRepository extends JpaRepository<Student, Long>{
 
-	//Page<Student> findAll(Pageable pageable);
 }
