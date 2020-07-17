@@ -1,6 +1,11 @@
 package com.nafys.sms.domain.resource;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,8 +41,9 @@ public class StudentController {
 
 	@GetMapping("/students")
 	@CrossOrigin
-	public ResponseEntity<Page<Student>> getAllStudents(Pageable pageable) {
+	public ResponseEntity<Page<Student>> getAllStudents(Pageable pageable, HttpServletRequest request) {
 		Page<Student> page = studentRepository.findAll(pageable);
+		//getHeadersInfo(request);
 
         return ResponseEntity.ok().body(page);
 	}
@@ -48,4 +54,19 @@ public class StudentController {
 		Optional<Student> student = studentRepository.findById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(student.get());
 	}
+	
+	private Map<String, String> getHeadersInfo(HttpServletRequest request) {
+
+        Map<String, String> map = new HashMap<String, String>();
+
+        Enumeration headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String key = (String) headerNames.nextElement();
+            String value = request.getHeader(key);
+            System.out.println(key +":"+value);
+            map.put(key, value);
+        }
+
+        return map;
+    }
 }
